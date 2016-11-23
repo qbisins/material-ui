@@ -1,6 +1,5 @@
 {
-  "name": "material-ui-build",
-  "private": true,
+  "name": "@qbis/material-ui-build",
   "author": "Call-em-all Engineering Team",
   "version": "0.16.4",
   "description": "React Components that Implement Google's Material Design.",
@@ -13,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/callemall/material-ui.git"
+    "url": "git+https://github.com/callemall/material-ui.git"
   },
   "license": "MIT",
   "bugs": {

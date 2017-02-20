@@ -1,9 +1,9 @@
 {
   "name": "@qbis/material-ui-build",
   "author": "Call-em-all Engineering Team",
-  "version": "0.16.5",
+  "version": "0.16.12",
   "description": "React Components that Implement Google's Material Design.",
-  "main": "./src/index.js",
+  "main": "./build/index.js",
   "keywords": [
     "react",
     "react-component",

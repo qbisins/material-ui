@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 
 function getStyles(props, context) {
-  const {baseTheme} = context.muiTheme;
+  const { baseTheme, flatButton } = context.muiTheme;
 
   return {
     root: {
@@ -9,6 +9,7 @@ function getStyles(props, context) {
       paddingLeft: baseTheme.spacing.desktopGutterLess,
       paddingRight: baseTheme.spacing.desktopGutterLess,
       verticalAlign: 'middle',
+      fontFamily: flatButton.fontFamily
     },
   };
 }

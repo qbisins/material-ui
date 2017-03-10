@@ -89,7 +89,6 @@ function getStyles(props, context, state) {
       paddingLeft: icon && labelPosition !== 'before' ? 8 : baseTheme.spacing.desktopGutterLess,
       paddingRight: icon && labelPosition === 'before' ? 8 : baseTheme.spacing.desktopGutterLess,
       color: labelColor,
-      fontFamily: raisedButton.fontFamily
     },
     icon: {
       verticalAlign: 'middle',

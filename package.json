@@ -3,7 +3,7 @@
   "author": "Call-em-all Engineering Team",
   "version": "0.16.17",
   "description": "React Components that Implement Google's Material Design.",
-  "main": "./src/index.js",
+  "main": "./build/index.js",
   "keywords": [
     "react",
     "react-component",

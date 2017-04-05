@@ -7,8 +7,8 @@ export const LARGE = 3;
 
 export default function withWidth(options = {}) {
   const {
-    largeWidth = 992,
-    mediumWidth = 768,
+    largeWidth     = 1024,
+    mediumWidth    = 720,
     resizeInterval = 166, // Corresponds to 10 frames at 60 Hz.
   } = options;
 
@@ -41,7 +41,7 @@ export default function withWidth(options = {}) {
           width = LARGE;
         } else if (innerWidth >= mediumWidth) {
           width = MEDIUM;
-        } else { // innerWidth < 768
+        } else { // innerWidth < 720
           width = SMALL;
         }
 

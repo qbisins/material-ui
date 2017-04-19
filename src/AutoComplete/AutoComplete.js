@@ -7,6 +7,7 @@ import MenuItem from '../MenuItem';
 import Divider from '../Divider';
 import Popover from '../Popover/Popover';
 import propTypes from '../utils/propTypes';
+import ReactHtmlParser from 'react-html-parser';
 
 function getStyles(props, context, state) {
   const {anchorEl} = state;
@@ -420,7 +421,7 @@ class AutoComplete extends Component {
                 <MenuItem
                   innerDivStyle={styles.innerDiv}
                   value={item}
-                  primaryText={item}
+                  primaryText={ReactHtmlParser(item)}
                   disableFocusRipple={disableFocusRipple}
                   key={index}
                 />),
@@ -484,13 +485,17 @@ class AutoComplete extends Component {
       </Menu>
     );
 
+    const
+      openBold  = '<b>',
+      closeBold = '</b>';
+
     return (
       <div style={prepareStyles(Object.assign(styles.root, style))} >
         <TextField
           {...other}
           ref="searchTextField"
           autoComplete="off"
-          value={searchText}
+          value={searchText.replace(openBold, '').replace(closeBold, '')}
           onChange={this.handleChange}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}

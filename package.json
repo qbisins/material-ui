@@ -1,7 +1,7 @@
 {
   "name": "@qbis/material-ui-build",
   "author": "Call-em-all Engineering Team",
-  "version": "0.16.19",
+  "version": "0.16.21",
   "description": "React Components that Implement Google's Material Design.",
   "main": "./build/index.js",
   "keywords": [
@@ -51,6 +51,7 @@
     "react-addons-create-fragment": "^15.0.0",
     "react-addons-transition-group": "^15.0.0",
     "react-event-listener": "^0.4.0",
+    "react-html-parser": "^1.0.3",
     "recompose": "^0.20.2",
     "simple-assign": "^0.1.0",
     "warning": "^3.0.0"

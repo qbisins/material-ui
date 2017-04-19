@@ -486,8 +486,10 @@ class AutoComplete extends Component {
     );
 
     const
-      openBold  = '<b>',
-      closeBold = '</b>';
+      openBold        = '<b>',
+      closeBold       = '</b>',
+      validSearchText = typeof searchText === 'string' ?
+        searchText.replace(openBold, '').replace(closeBold, '') : searchText;
 
     return (
       <div style={prepareStyles(Object.assign(styles.root, style))} >
@@ -495,7 +497,7 @@ class AutoComplete extends Component {
           {...other}
           ref="searchTextField"
           autoComplete="off"
-          value={searchText.replace(openBold, '').replace(closeBold, '')}
+          value={validSearchText}
           onChange={this.handleChange}
           onBlur={this.handleBlur}
           onFocus={this.handleFocus}

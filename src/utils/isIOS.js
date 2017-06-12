@@ -13,7 +13,7 @@ export const getOffsetTop = (elem) => {
     tempEl = tempEl.offsetParent;
   }
 
-  return yPos;
+  return yPos - window.pageYOffset;
 };
 
 

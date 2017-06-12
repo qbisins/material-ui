@@ -12,9 +12,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:qbisins/material-ui.git"
+    "url": "git+https://github.com/callemall/material-ui.git"
   },
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/callemall/material-ui/issues"
+  },
   "homepage": "http://material-ui.com/",
   "scripts": {
     "build": "npm run build:icon-index && npm run build:babel && npm run build:copy-files && npm run build:index",

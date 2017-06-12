@@ -6,7 +6,7 @@ import propTypes from '../utils/propTypes';
 import Paper from '../Paper';
 import throttle from 'lodash.throttle';
 import PopoverAnimationDefault from './PopoverAnimationDefault';
-import {isIOS, getOffsetTop} from '../utils/isIOS';
+import {isIOS} from '../utils/isIOS';
 
 class Popover extends Component {
   static propTypes = {
@@ -241,13 +241,13 @@ class Popover extends Component {
     };
 
     a.right = rect.right || a.left + a.width;
-    if (isIOS() && document.activeElement.tagName === 'INPUT') {
-      a.bottom = getOffsetTop(el) + a.height;
-    } else {
-      a.bottom = rect.bottom || a.top + a.height;
-    }
+    a.bottom = rect.bottom || a.top + a.height;
     a.middle = a.left + ((a.right - a.left) / 2);
     a.center = a.top + ((a.bottom - a.top) / 2);
+
+    if (isIOS() && document.activeElement.tagName === 'INPUT') {
+      a.top = rect.top - el.offsetHeight;
+    }
 
     return a;
   }

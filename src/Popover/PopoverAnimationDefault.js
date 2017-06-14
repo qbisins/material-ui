@@ -35,19 +35,33 @@ function getStyles(props, context, state) {
   };
 }
 
-function getOpenStyles() {
+function getOpenStyles(props, context, state) {
+  const {targetOrigin} = props;
+  const {muiTheme} = context;
+  const horizontal = targetOrigin.horizontal.replace('middle', 'vertical');
+
   return {
     root: {
       opacity: 1,
       transform: 'scale(1, 1)',
+      transformOrigin: `${horizontal} ${targetOrigin.vertical}`,
+      zIndex: muiTheme.zIndex.popover,
+      transition: transitions.easeOut('250ms', ['transform', 'opacity']),
+      maxHeight: '100%',
     },
     horizontal: {
-      opacity: 1,
+      maxHeight: '100%',
+      overflowY: 'auto',
       transform: 'scaleX(1)',
+      opacity: 1,
+      transformOrigin: `${horizontal} ${targetOrigin.vertical}`,
+      transition: transitions.easeOut('250ms', ['transform', 'opacity']),
     },
     vertical: {
       opacity: 1,
       transform: 'scaleY(1)',
+      transformOrigin: `${horizontal} ${targetOrigin.vertical}`,
+      transition: transitions.easeOut('500ms', ['transform', 'opacity']),
     },
   };
 }
@@ -102,7 +116,7 @@ class PopoverAnimationDefault extends Component {
     const styles = getStyles(this.props, this.context, this.state);
     let openStyles = {root: {}, horizontal: {}, vertical: {}};
     if (this.state.open)
-      openStyles = this.getOpenStyles();
+      openStyles = this.getOpenStyles(this.props, this.context, this.state);
 
     return (
       <Paper

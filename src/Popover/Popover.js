@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import WindowListenable from '../mixins/window-listenable';
-import RenderToLayer from '../render-to-layer';
+import RenderToLayer from '../internal/RenderToLayer';
 import StylePropable from '../mixins/style-propable';
 import propTypes from '../utils/propTypes';
 import Paper from '../Paper';

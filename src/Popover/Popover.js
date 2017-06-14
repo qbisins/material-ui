@@ -6,7 +6,7 @@ import StylePropable from '../mixins/style-propable';
 import propTypes from '../utils/propTypes';
 import Paper from '../Paper';
 import throttle from 'lodash.throttle';
-// import PopoverAnimationDefault from './PopoverAnimationDefault';
+import PopoverAnimationDefault from './PopoverAnimationDefault';
 import reactMixin from 'react-mixin';
 
 class Popover extends Component {
@@ -188,11 +188,10 @@ class Popover extends Component {
 
     let styleRoot = style;
 
-    // const Animation = animation || PopoverAnimationDefault;
-
-    if (!animation) {
+    if (!animated) {
       styleRoot = {
         position: 'fixed',
+        zIndex: this.context.muiTheme.zIndex.popover,
       };
 
       if (!this.state.open) {
@@ -200,23 +199,24 @@ class Popover extends Component {
       }
 
       return (
-        <Paper style={Object.assign({}, styleRoot, style)} {...other}>
+        <Paper style={Object.assign(styleRoot, style)} {...other}>
           {children}
         </Paper>
       );
     }
 
+    const Animation = animation || PopoverAnimationDefault;
 
-    // return (
-    //   <Animation
-    //     targetOrigin={targetOrigin}
-    //     style={styleRoot}
-    //     {...other}
-    //     open={this.state.open && !this.state.closing}
-    //   >
-    //     {children}
-    //   </Animation>
-    // );
+    return (
+      <Animation
+        targetOrigin={targetOrigin}
+        style={styleRoot}
+        {...other}
+        open={this.state.open && !this.state.closing}
+      >
+        {children}
+      </Animation>
+    );
   };
 
   requestClose(reason) {

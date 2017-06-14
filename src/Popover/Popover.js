@@ -1,11 +1,13 @@
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
-import EventListener from 'react-event-listener';
-import RenderToLayer from '../internal/RenderToLayer';
+import WindowListenable from '../mixins/window-listenable';
+import RenderToLayer from '../render-to-layer';
+import StylePropable from '../mixins/style-propable';
 import propTypes from '../utils/propTypes';
 import Paper from '../Paper';
 import throttle from 'lodash.throttle';
-import PopoverAnimationDefault from './PopoverAnimationDefault';
+// import PopoverAnimationDefault from './PopoverAnimationDefault';
+import reactMixin from 'react-mixin';
 
 class Popover extends Component {
   static propTypes = {
@@ -186,7 +188,9 @@ class Popover extends Component {
 
     let styleRoot = style;
 
-    if (!animated) {
+    // const Animation = animation || PopoverAnimationDefault;
+
+    if (!animation) {
       styleRoot = {
         position: 'fixed',
       };
@@ -202,18 +206,17 @@ class Popover extends Component {
       );
     }
 
-    const Animation = animation || PopoverAnimationDefault;
 
-    return (
-      <Animation
-        targetOrigin={targetOrigin}
-        style={styleRoot}
-        {...other}
-        open={this.state.open && !this.state.closing}
-      >
-        {children}
-      </Animation>
-    );
+    // return (
+    //   <Animation
+    //     targetOrigin={targetOrigin}
+    //     style={styleRoot}
+    //     {...other}
+    //     open={this.state.open && !this.state.closing}
+    //   >
+    //     {children}
+    //   </Animation>
+    // );
   };
 
   requestClose(reason) {
@@ -235,12 +238,12 @@ class Popover extends Component {
     const a = {
       top: rect.top,
       left: rect.left,
-      bottom: rect.bottom,
       width: el.offsetWidth,
       height: el.offsetHeight
     };
 
     a.right = rect.right || a.left + a.width;
+    a.bottom = rect.bottom || a.top + a.height;
     a.middle = a.left + ((a.right - a.left) / 2);
     a.center = a.top + ((a.bottom - a.top) / 2);
 
@@ -275,11 +278,11 @@ class Popover extends Component {
     const {targetOrigin, anchorOrigin} = this.props;
     const anchorEl = this.props.anchorEl || this.anchorEl;
 
-    const anchor = this.getAnchorPosition(anchorEl);
+    let anchor = this.getAnchorPosition(anchorEl);
     let target = this.getTargetPosition(targetEl);
 
     let targetPosition = {
-      top: anchor.bottom,
+      top: anchor[anchorOrigin.vertical] - target[targetOrigin.vertical],
       left: anchor[anchorOrigin.horizontal] - target[targetOrigin.horizontal],
     };
 
@@ -313,15 +316,15 @@ class Popover extends Component {
   }
 
   getPositions(anchor, target) {
-    const a = {...anchor};
-    const t = {...target};
+    let a = {...anchor};
+    let t = {...target};
 
-    const positions = {
+    let positions = {
       x: ['left', 'right'].filter((p) => p !== t.horizontal),
       y: ['top', 'bottom'].filter((p) => p !== t.vertical),
     };
 
-    const overlap = {
+    let overlap = {
       x: this.getOverlapMode(a.horizontal, t.horizontal, 'middle'),
       y: this.getOverlapMode(a.vertical, t.vertical, 'center'),
     };
@@ -350,7 +353,7 @@ class Popover extends Component {
   }
 
   applyAutoPositionIfNeeded(anchor, target, targetOrigin, anchorOrigin, targetPosition) {
-    const {positions, anchorPos} = this.getPositions(anchorOrigin, targetOrigin);
+    let {positions, anchorPos} = this.getPositions(anchorOrigin, targetOrigin);
 
     if (targetPosition.top < 0 || targetPosition.top + target.bottom > window.innerHeight) {
       let newTop = anchor[anchorPos.vertical] - target[positions.y[0]];
@@ -377,22 +380,18 @@ class Popover extends Component {
 
   render() {
     return (
-      <div>
-        <EventListener
-          target="window"
-          onScroll={this.handleScroll}
-          onResize={this.handleResize}
-        />
-        <RenderToLayer
-          ref="layer"
-          open={this.state.open}
-          componentClickAway={this.componentClickAway}
-          useLayerForClickAway={this.props.useLayerForClickAway}
-          render={this.renderLayer}
-        />
-      </div>
+      <RenderToLayer
+        ref="layer"
+        open={this.state.open}
+        componentClickAway={this.componentClickAway}
+        useLayerForClickAway={this.props.useLayerForClickAway}
+        render={this.renderLayer}
+      />
     );
   }
 }
+
+reactMixin(Popover.prototype, WindowListenable);
+reactMixin(Popover.prototype, StylePropable);
 
 export default Popover;

@@ -16,5 +16,3 @@ jsconfig.json
 
 # OS files
 .DS_STORE
-
-package-lock.json

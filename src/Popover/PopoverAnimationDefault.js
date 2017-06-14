@@ -2,6 +2,7 @@ import transitions from '../styles/transitions';
 import React, {Component, PropTypes} from 'react';
 import propTypes from '../utils/propTypes';
 import Paper from '../Paper';
+import {isIOS} from '../utils/isIOS';
 
 function getStyles(props, context, state) {
   const {targetOrigin} = props;
@@ -14,7 +15,7 @@ function getStyles(props, context, state) {
       opacity: open ? 1 : 0,
       transform: open ? 'scale(1, 1)' : 'scale(0, 0)',
       transformOrigin: `${horizontal} ${targetOrigin.vertical}`,
-      position: 'fixed',
+      position: isIOS() ? 'absolute' : 'fixed',
       zIndex: muiTheme.zIndex.popover,
       transition: transitions.easeOut('250ms', ['transform', 'opacity']),
       maxHeight: '100%',

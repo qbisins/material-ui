@@ -5,14 +5,13 @@ import Paper from '../Paper';
 
 function getStyles(props, context, state) {
   const {targetOrigin} = props;
-  const {open} = state;
   const {muiTheme} = context;
   const horizontal = targetOrigin.horizontal.replace('middle', 'vertical');
 
   return {
     root: {
-      opacity: open ? 1 : 0,
-      transform: open ? 'scale(1, 1)' : 'scale(0, 0)',
+      opacity: 0,
+      transform: 'scale(0, 0)',
       transformOrigin: `${horizontal} ${targetOrigin.vertical}`,
       position: 'fixed',
       zIndex: muiTheme.zIndex.popover,
@@ -22,16 +21,33 @@ function getStyles(props, context, state) {
     horizontal: {
       maxHeight: '100%',
       overflowY: 'auto',
-      transform: open ? 'scaleX(1)' : 'scaleX(0)',
-      opacity: open ? 1 : 0,
+      transform: 'scaleX(0)',
+      opacity: 0,
       transformOrigin: `${horizontal} ${targetOrigin.vertical}`,
       transition: transitions.easeOut('250ms', ['transform', 'opacity']),
     },
     vertical: {
-      opacity: open ? 1 : 0,
-      transform: open ? 'scaleY(1)' : 'scaleY(0)',
+      opacity: 0,
+      transform: 'scaleY(0)',
       transformOrigin: `${horizontal} ${targetOrigin.vertical}`,
       transition: transitions.easeOut('500ms', ['transform', 'opacity']),
+    },
+  };
+}
+
+function getOpenStyles() {
+  return {
+    root: {
+      opacity: 1,
+      transform: 'scale(1, 1)',
+    },
+    horizontal: {
+      opacity: 1,
+      transform: 'scaleX(1)',
+    },
+    vertical: {
+      opacity: 1,
+      transform: 'scaleY(1)',
     },
   };
 }
@@ -84,15 +100,18 @@ class PopoverAnimationDefault extends Component {
 
     const {prepareStyles} = this.context.muiTheme;
     const styles = getStyles(this.props, this.context, this.state);
+    let openStyles = {root: {}, horizontal: {}, vertical: {}};
+    if (this.state.open)
+      openStyles = this.getOpenStyles();
 
     return (
       <Paper
-        style={Object.assign(styles.root, style)}
+        style={Object.assign(styles.root, style, openStyles.root)}
         zDepth={zDepth}
         className={className}
       >
-        <div style={prepareStyles(styles.horizontal)}>
-          <div style={prepareStyles(styles.vertical)}>
+        <div style={prepareStyles(styles.horizontal, openStyles.horizontal)}>
+          <div style={prepareStyles(styles.vertical, openStyles.vertical)}>
             {this.props.children}
           </div>
         </div>

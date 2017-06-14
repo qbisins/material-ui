@@ -44,24 +44,14 @@ function getOpenStyles(props, context, state) {
     root: {
       opacity: 1,
       transform: 'scale(1, 1)',
-      transformOrigin: `${horizontal} ${targetOrigin.vertical}`,
-      zIndex: muiTheme.zIndex.popover,
-      transition: transitions.easeOut('250ms', ['transform', 'opacity']),
-      maxHeight: '100%',
     },
     horizontal: {
-      maxHeight: '100%',
-      overflowY: 'auto',
-      transform: 'scaleX(1)',
       opacity: 1,
-      transformOrigin: `${horizontal} ${targetOrigin.vertical}`,
-      transition: transitions.easeOut('250ms', ['transform', 'opacity']),
+      transform: 'scaleX(1)',
     },
     vertical: {
       opacity: 1,
       transform: 'scaleY(1)',
-      transformOrigin: `${horizontal} ${targetOrigin.vertical}`,
-      transition: transitions.easeOut('500ms', ['transform', 'opacity']),
     },
   };
 }

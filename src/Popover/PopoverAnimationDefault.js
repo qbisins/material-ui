@@ -116,7 +116,7 @@ class PopoverAnimationDefault extends Component {
     const styles = getStyles(this.props, this.context, this.state);
     let openStyles = {root: {}, horizontal: {}, vertical: {}};
     if (this.state.open)
-      openStyles = this.getOpenStyles(this.props, this.context, this.state);
+      openStyles = getOpenStyles(this.props, this.context, this.state);
 
     return (
       <Paper

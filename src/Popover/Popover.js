@@ -1,13 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
-import WindowListenable from '../mixins/window-listenable';
+import EventListener from 'react-event-listener';
 import RenderToLayer from '../internal/RenderToLayer';
-import StylePropable from '../mixins/style-propable';
 import propTypes from '../utils/propTypes';
 import Paper from '../Paper';
 import throttle from 'lodash.throttle';
 import PopoverAnimationDefault from './PopoverAnimationDefault';
-import reactMixin from 'react-mixin';
+import {isIOS, getOffsetTop} from '../utils/isIOS';
 
 class Popover extends Component {
   static propTypes = {
@@ -191,7 +190,6 @@ class Popover extends Component {
     if (!animated) {
       styleRoot = {
         position: 'fixed',
-        zIndex: this.context.muiTheme.zIndex.popover,
       };
 
       if (!this.state.open) {
@@ -199,7 +197,7 @@ class Popover extends Component {
       }
 
       return (
-        <Paper style={Object.assign(styleRoot, style)} {...other}>
+        <Paper style={Object.assign({}, styleRoot, style)} {...other}>
           {children}
         </Paper>
       );
@@ -239,11 +237,15 @@ class Popover extends Component {
       top: rect.top,
       left: rect.left,
       width: el.offsetWidth,
-      height: el.offsetHeight
+      height: el.offsetHeight,
     };
 
     a.right = rect.right || a.left + a.width;
-    a.bottom = rect.bottom || a.top + a.height;
+    if (isIOS() && document.activeElement.tagName === 'INPUT') {
+      a.bottom = getOffsetTop(el) + a.height;
+    } else {
+      a.bottom = rect.bottom || a.top + a.height;
+    }
     a.middle = a.left + ((a.right - a.left) / 2);
     a.center = a.top + ((a.bottom - a.top) / 2);
 
@@ -278,7 +280,7 @@ class Popover extends Component {
     const {targetOrigin, anchorOrigin} = this.props;
     const anchorEl = this.props.anchorEl || this.anchorEl;
 
-    let anchor = this.getAnchorPosition(anchorEl);
+    const anchor = this.getAnchorPosition(anchorEl);
     let target = this.getTargetPosition(targetEl);
 
     let targetPosition = {
@@ -316,15 +318,15 @@ class Popover extends Component {
   }
 
   getPositions(anchor, target) {
-    let a = {...anchor};
-    let t = {...target};
+    const a = {...anchor};
+    const t = {...target};
 
-    let positions = {
+    const positions = {
       x: ['left', 'right'].filter((p) => p !== t.horizontal),
       y: ['top', 'bottom'].filter((p) => p !== t.vertical),
     };
 
-    let overlap = {
+    const overlap = {
       x: this.getOverlapMode(a.horizontal, t.horizontal, 'middle'),
       y: this.getOverlapMode(a.vertical, t.vertical, 'center'),
     };
@@ -353,7 +355,7 @@ class Popover extends Component {
   }
 
   applyAutoPositionIfNeeded(anchor, target, targetOrigin, anchorOrigin, targetPosition) {
-    let {positions, anchorPos} = this.getPositions(anchorOrigin, targetOrigin);
+    const {positions, anchorPos} = this.getPositions(anchorOrigin, targetOrigin);
 
     if (targetPosition.top < 0 || targetPosition.top + target.bottom > window.innerHeight) {
       let newTop = anchor[anchorPos.vertical] - target[positions.y[0]];
@@ -380,18 +382,22 @@ class Popover extends Component {
 
   render() {
     return (
-      <RenderToLayer
-        ref="layer"
-        open={this.state.open}
-        componentClickAway={this.componentClickAway}
-        useLayerForClickAway={this.props.useLayerForClickAway}
-        render={this.renderLayer}
-      />
+      <div>
+        <EventListener
+          target="window"
+          onScroll={this.handleScroll}
+          onResize={this.handleResize}
+        />
+        <RenderToLayer
+          ref="layer"
+          open={this.state.open}
+          componentClickAway={this.componentClickAway}
+          useLayerForClickAway={this.props.useLayerForClickAway}
+          render={this.renderLayer}
+        />
+      </div>
     );
   }
 }
-
-reactMixin(Popover.prototype, WindowListenable);
-reactMixin(Popover.prototype, StylePropable);
 
 export default Popover;

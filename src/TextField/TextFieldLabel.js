@@ -42,6 +42,7 @@ const TextFieldLabel = (props) => {
       style={prepareStyles(styles.root)}
       htmlFor={htmlFor}
       onTouchTap={onTouchTap}
+      id={`label_for_${htmlFor}`}
     >
       {children}
     </label>

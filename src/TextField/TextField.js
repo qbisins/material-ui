@@ -412,6 +412,7 @@ class TextField extends Component {
         htmlFor={inputId}
         shrink={this.state.hasValue || this.state.isFocused || floatingLabelFixed}
         disabled={disabled}
+        id={`label_for_${inputId}`}
       >
         {floatingLabelText}
       </TextFieldLabel>

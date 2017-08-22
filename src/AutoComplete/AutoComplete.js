@@ -28,6 +28,8 @@ function getStyles(props, context, state) {
     },
     innerDiv: {
       overflow: 'hidden',
+      wordWrap: 'nowrap',
+      whiteSpace: 'normal',
     },
   };
 

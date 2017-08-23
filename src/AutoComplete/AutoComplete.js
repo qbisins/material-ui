@@ -27,7 +27,10 @@ function getStyles(props, context, state) {
       width: fullWidth ? '100%' : 256,
     },
     innerDiv: {
+      lineHeight: '20px',
       overflow: 'hidden',
+      paddingBottom: '15px',
+      paddingTop: '15px',
       wordWrap: 'nowrap',
       whiteSpace: 'normal',
     },
